@@ -1,16 +1,48 @@
 //홈 컨트롤러
 "use strict";
 
-const main = (req, res) => {
-    res.render("home/index");
+const UserStorage = require("../../models/UserStorage");
+
+const output = {
+    main : (req, res) => {
+        res.render("home/index");
+    },
+    
+    login : (req, res)=>{
+        res.render("home/login");
+    },
 };
 
 
-const login = (req, res)=>{
-    res.render("home/login");
+
+const process = {
+    login : (req, res) => {
+        const id = req.body.id;
+        const password = req.body.password;
+
+        //const userStorage = new UserStorage(); 
+        const users = UserStorage.getInfo("id", "password");
+
+        const response = {};
+        /* const response = {};
+        console.log(id, password);
+        if(users.id.includes(id)){
+            const idx = users.id.indexOf(id);
+            if(users.password[idx] === password){
+                
+                    response.success = true;
+                    return res.json(response);
+            }
+        }*/
+
+        response.success = true;
+        response.msg = "로그인에 실패하셨습니다."
+        return res.json(response); 
+    }
 }
 
+
 module.exports = {
-    main,
-    login,
+   output,
+   process,
 };
