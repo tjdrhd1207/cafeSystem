@@ -2,9 +2,9 @@
 
 const $ = (selector) => document.querySelector(selector);
 
-const id = $("#id_ipt");
-const password = $("#pwd_ipt");
-const loginBtn = $("button");
+const id = $("#id-ipt");
+const password = $("#pwd-ipt");
+const loginBtn = $("#button");
 
 const login = (e) => {
     const req = {

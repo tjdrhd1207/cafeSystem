@@ -8,20 +8,32 @@ class UserStorage {
         name : ["재민","민우","호종"],
     };
 
-    static getInfo(...fields){
+    static getUsers(...fields){
         const users = this.#users;
         /**reduce 반복문 */
         const newUsers = fields.reduce((newUsers, field)=>{
-            //console.log(newUsers, field);
+            
             if(users.hasOwnProperty(field)){
+            
                 newUsers[field] = users[field];
             }
             return newUsers;
+        
         }, {});
-        console.log(newUsers);
-        //const info = { id : this.#users.id, password : this.#users.password};
-        //return info;
-        return ;
+        
+        return newUsers;
+    }
+
+    static getUserInfo(id){
+        const users = this.#users;
+        const idx = users.id.indexOf(id);
+        const usersKeys = Object.keys(users);   // => [id, password, name]
+        const userInfo = usersKeys.reduce((newUser, info)=>{
+            newUser[info] = users[info][idx];
+            return newUser;
+        }, {});
+
+        return userInfo;
     }
 }
 

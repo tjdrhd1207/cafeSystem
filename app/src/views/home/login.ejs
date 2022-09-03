@@ -5,14 +5,30 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="/css/home/login.css">
 </head>
 <body>
     <main>
-        <form>
-            <input id="id_ipt" type="text" placeholder="아이디">
-            <input id="pwd_ipt" type="password" placeholder="비밀번호">
-            <button>로그인</button>
-        </form>
+        <div class="login-page">
+            <div class="logoBox">
+                <h2>JamBucks</h2>
+            </div>
+            <div class="form">
+              <form class="register-form">
+                <input type="text" placeholder="name"/>
+                <input type="password" placeholder="password"/>
+                <input type="text" placeholder="email address"/>
+                <button>create</button>
+                <p class="message">Already registered? <a href="/register">Sign In</a></p>
+              </form>
+              <form class="login-form">
+                <input id="id_ipt" type="text" placeholder="아이디"/>
+                <input id="pwd_ipt" type="password" placeholder="비밀번호"/>
+                <button id="button">login</button>
+                <p class="message">Not registered? <a href="#">Create an account</a></p>
+              </form>
+            </div>
+          </div>
     </main>
     <script src="/js/home/login.js" defer></script>
 </body>

@@ -34,9 +34,7 @@ const index = () => {
             $("#menu-list").insertAdjacentHTML('beforeend',menuTemplate(coffee));
         
     });
-    console.log("하이");
-    //console.log(searchDetail);
-  
+
 }
 
 const checkMenu = () => {
