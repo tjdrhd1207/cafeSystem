@@ -10,20 +10,32 @@ class User {
     }
 
     login(){
-        const body = this.body;
-        const {id, password} = UserStorage.getUserInfo(body.id);
+        const client = this.body;
+        const {id, password} = UserStorage.getUserInfo(client.id);
       
         if(id){
-            if(id === body.id && password === body.password){
-                return { success : true };
-            }else{
+            if(id === client.id && password === client.password){
                 
+                return { success : true };
+            
+            }else{
+
                 return { success : false, msg : "비밀번호가 다릅니다." };
                 
             }
         }
         
         return {succss : false, msg : "존재하지 않는 아이디입니다."};
+    }
+
+    register(){
+        
+        const client = this.body;
+        const response = UserStorage.save(client);
+        
+        return response;
+        
+        
     }
 }
 
