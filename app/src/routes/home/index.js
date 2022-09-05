@@ -12,5 +12,6 @@ router.get("/register", controller.output.register);
 
 router.post("/login", controller.process.login);
 router.post("/register", controller.process.register);
+router.post("/searchMenu", controller.process.searchMenu);
 
 module.exports = router;

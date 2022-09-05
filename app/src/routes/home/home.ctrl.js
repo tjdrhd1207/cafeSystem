@@ -21,17 +21,24 @@ const output = {
 
 
 const process = {
-    login : (req, res) => {
+    login : async(req, res) => {
         //클라이언트가 입력한 정보를 가지고 User인스턴스화
         const user = new User(req.body);
-        const response = user.login();
+        const response = await user.login();
         return res.json(response);
 
     },
 
-    register : (req, res) => {
+    register : async (req, res) => {
         const user = new User(req.body);
-        const response = user.register();
+        const response = await user.register();
+        return res.json(response);
+    },
+    
+    searchMenu : (req, res)=>{
+        const response = {"메뉴" : "아이스아메리카노"};
+        //const response = .searchMenu();
+        console.log("searchMenu : "+JSON.stringify(response));
         return res.json(response);
     }
 }

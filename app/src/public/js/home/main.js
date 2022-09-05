@@ -41,4 +41,22 @@ const checkMenu = () => {
 
 }
 
+
+const loadStorage = () =>{
+
+    fetch("/searchMenu",{
+        method : "POST",
+        headers : {"Content-Type" : "application/json"},
+        body : JSON.stringify(),
+    }).then((res) => {
+        res.json(); 
+        console.log("res : "+JSON.stringify(res));
+     })
+      .catch((err)=> console.log(err));
+
+}
+
+
+document.addEventListener("DOMContentLoaded", loadStorage);
+
 index();

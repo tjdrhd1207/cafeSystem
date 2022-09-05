@@ -70,12 +70,13 @@ const checkPwd = (e) => {
     }else{
 
         const tagDiv = document.getElementById("pTag");
-        tagDiv.remove();
-
+        
+        if(tagDiv){
+            tagDiv.remove();
+        }
     }
 
 }
-
 
 
 confirmPassword.addEventListener("blur", checkPwd);
