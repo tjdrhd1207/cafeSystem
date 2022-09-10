@@ -2,7 +2,7 @@
 "use strict";
 
 const User = require("../../models/Users");
-
+const Menu = require("../../models/Menu");
 
 const output = {
     main : (req, res) => {
@@ -31,16 +31,23 @@ const process = {
 
     register : async (req, res) => {
         const user = new User(req.body);
+
+        
         const response = await user.register();
+
+        console.log("user : "+JSON.stringify(response));
         return res.json(response);
     },
     
-    searchMenu : (req, res)=>{
-        const response = {"메뉴" : "아이스아메리카노"};
-        //const response = .searchMenu();
-        console.log("searchMenu : "+JSON.stringify(response));
+    getMenu : async(req,res) => {
+        const menu = new Menu(req.body);
+
+        const response = await menu.getMenu();
+        console.log("response : "+JSON.stringify(response));
+        
         return res.json(response);
     }
+
 }
 
 

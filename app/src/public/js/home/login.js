@@ -1,5 +1,6 @@
 "use strict";
 
+
 const $ = (selector) => document.querySelector(selector);
 
 const id = $("#id-ipt");

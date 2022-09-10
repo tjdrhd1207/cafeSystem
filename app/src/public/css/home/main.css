@@ -1,0 +1,213 @@
+@font-face {
+    font-family: 'GangwonEduPowerExtraBoldA';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEduPowerExtraBoldA.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    background: rgb(73, 100, 57);
+    background: linear-gradient(90deg, #36492b 0%, #36492b 50%);
+}
+
+header {
+    text-align: center;
+    
+}
+
+.logo {
+    color : white;
+    font-size: 50px;
+}
+
+header > nav > button {
+    height: 40px;
+    cursor: pointer;
+    width: 130px;
+    border-radius: 5px;
+    box-shadow: 3px 3px 2px lightslategrey;
+    border: none;
+    margin-right: 10px;
+    font-family: 'GangwonEduPowerExtraBoldA';
+    
+}
+
+header > nav > button:hover {
+    background-color: antiquewhite;    
+}
+
+main {
+    height : 80vh;
+    text-align: center;
+    margin-top: 80px;
+    
+}
+
+.container {
+    /* width: 50vw;
+    background-color: white;
+    display : inline-block;
+    height: 100%;
+    border-radius: 10px */
+}
+
+.menu-input-container{
+    background-color: white;
+    display: inline-block;
+    width : 40vw;
+    height: 13vh;
+    border-radius: 8px;
+    text-align: left;
+    padding : 10px 0 0 0;
+}
+
+.menu-input-container #menu {
+    text-align: left;
+    margin-left : 50px;
+}
+
+#menu-name-input {
+    border-style: none;
+    background-color: gainsboro;
+    width: 400px;
+    margin-left: 30px;
+    border-radius: 10px;
+    height: 35px;
+    font-family: 'GangwonEduPowerExtraBoldA';
+    text-align: center;
+    font-size : 17px;
+}
+
+#menu-name-input::placeholder {
+    font-family: 'GangwonEduPowerExtraBoldA';
+    text-align: center;
+    font-size : 15px;
+}
+
+#menu-price-input{
+    font-family: 'GangwonEduPowerExtraBoldA';
+    border-style: none;
+    background-color: gainsboro;
+    border-radius: 10px;
+    height: 35px;
+    margin-left : 15px;
+    text-align: center;
+    font-size : 17px;
+    width: 130px;
+}
+
+#menu-price-input::placeholder{
+    font-family: 'GangwonEduPowerExtraBoldA';
+    text-align: center;
+    font-size : 15px;
+}
+
+.menu-input-inner-container{
+    display: flex;
+}
+
+#add_menu_btn{
+    width: 55px;
+    margin-left: 20px;
+    border-style: none;
+    background-color: lightblue;
+    border-radius: 10px;
+
+    font-family: 'GangwonEduPowerExtraBoldA';
+    text-align: center;
+    font-size : 15px;
+    cursor: pointer;
+}
+
+.menu-list-container{
+    margin-top : 30px;
+}
+
+
+#menu-list {
+    display: inline-block;
+    width: 50vw;
+    background-color : white;
+    height : 70vh;
+    list-style: none;
+    padding: 40px 0px 0px 0px;
+    border-radius: 8px;
+}
+
+.menu-list-name{
+    font-family: 'GangwonEduPowerExtraBoldA';
+    margin-bottom: 30px;
+    font-size: 30px;
+}
+
+.container .menu-input-container #menu {
+    text-align: left;
+    margin-top: 30px;
+    margin-left: 50px;
+    font-size: 30px;
+    font-family: 'GangwonEduPowerExtraBoldA';
+    height: 50px;
+}
+
+.container .menu-input-container #menu-count {
+    float : right;
+    margin-right: 30px;
+    font-family: 'GangwonEduPowerExtraBoldA';
+    font-size: 20px;
+}
+
+.menu-modify-modal {
+    position: fixed;
+    z-index : 9999;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+#modal-open {
+    position : fixed;
+    display : block;
+    box-shadow : 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    z-index : 10000;
+    top : 50%;
+    left : 50%;
+    transform : translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+
+}
+
+#my_modal {
+    display: none;
+    width: 300px;
+    padding: 20px 60px;
+    background-color: #fefefe;
+    border: 1px solid #888;
+    border-radius: 3px;
+}
+
+.menu-edit-btn, .price-edit-btn, .menu-del-btn {
+    width: 55px;
+    margin-left: 20px;
+    border-style: none;
+    background-color: lightblue;
+    border-radius: 10px;
+
+    font-family: 'GangwonEduPowerExtraBoldA';
+    text-align: center;
+    font-size : 15px;
+    cursor: pointer;
+
+}
+
+.menu-name, .menu-price {
+    padding-right : 20px;
+}
+
+.menu-list-name{
+    display: flex;
+    justify-content: center;
+}

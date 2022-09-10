@@ -1,5 +1,6 @@
 "use strict";
 
+
 const $ = (selector) => document.querySelector(selector);
 
 const id = $("#id-ipt");
@@ -35,9 +36,11 @@ const register = (e) => {
         body : JSON.stringify(req),
     }).then((res) => res.json())
       .then((res) => {
+        
         if(res.success){
             location.href = "/login";
         }else{
+            id.value = "";
             alert(res.msg);
         }
       }).catch((err)=>{
@@ -70,7 +73,7 @@ const checkPwd = (e) => {
     }else{
 
         const tagDiv = document.getElementById("pTag");
-        
+
         if(tagDiv){
             tagDiv.remove();
         }

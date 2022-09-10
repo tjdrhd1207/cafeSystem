@@ -8,6 +8,14 @@ class Menu {
         this.body = body;
     }
 
+    async getMenu(){
+        const menu = this.body;
+
+        const response = await MenuStorage.getMenu();
+        console.log("result : "+JSON.stringify(response));
+        return response;
+    }
+
 }
 
 module.exports = Menu;
