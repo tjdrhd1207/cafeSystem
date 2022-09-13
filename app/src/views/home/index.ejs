@@ -16,20 +16,20 @@
                     
                         <h1 class="logo">JamBucks' Menu 관리</h1>
                     
-                    <nav>
-                        <button>
-                            ☕ 아메리카노
+                    <nav class="cafe-type-navbar">
+                        <button data-category-name="espresso" class="coffee-type">
+                            ☕ 에스프레소
                         </button>
-                        <button>
+                        <button data-category-name="frappuccino" class="coffee-type">
                             🥤 프라푸치노
                         </button>
-                        <button>
+                        <button data-category-name="blendid" class="coffee-type">
                             🍹 블렌디드
                         </button>
-                        <button>
+                        <button data-category-name="tea" class="coffee-type">
                             🥡 티
                         </button>
-                        <button>
+                        <button data-category-name="desert" class="coffee-type">
                             🍰 디저트
                         </button>
                     </nav>
@@ -37,11 +37,11 @@
                 <main>
                     <div class="container">
                         <div class="menu-input-container">
-                            <span id="menu">메뉴</span>
+                            <span id="category-title">☕ 에스프레소 메뉴 관리</span>
                             <span id="menu-count">총 0 개</span>
                             <form id="menu-form">
                                     <div class="menu-input-inner-container">
-                                    <input type="text" id="menu-name-input" placeholder="커피 이름" />
+                                    <input type="text" id="menu-name-input" placeholder="에스프레소 메뉴 이름" />
                                     <!-- <label for="menu-price-input">가격</label> -->
                                     <input type="text" id="menu-price-input" placeholder="커피 가격" />
                                     <button type="submit" id="add_menu_btn">추가</button>

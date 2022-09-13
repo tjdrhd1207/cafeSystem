@@ -21,7 +21,7 @@ const modal = (id) => {
 }
 
 document.getElementById('menu-edit-btn').addEventListener("click", (e)=>{
-    alert("하이");
-    //modal('my_modal');
+    //alert("하이");
+    modal('my_modal');
 });
 
