@@ -31,21 +31,25 @@ const process = {
 
     register : async (req, res) => {
         const user = new User(req.body);
-
-        
         const response = await user.register();
-
-        console.log("user : "+JSON.stringify(response));
         return res.json(response);
     },
     
-    getMenu : async(req,res) => {
+    getMenu : async(req, res) => {
         const menu = new Menu(req.body);
-
         const response = await menu.getMenu();
-        console.log("response : "+JSON.stringify(response));
         
         return res.json(response);
+    },
+
+    addMenu : async(req, res) => {
+        const { category } = req.params;
+        console.log("category : "+category);
+        const menu = new Menu(req.body);
+        console.log("req.body : "+JSON.stringify(req.body));
+        const response = await menu.addMenu(category);
+
+        //return res.json(response);
     }
 
 }

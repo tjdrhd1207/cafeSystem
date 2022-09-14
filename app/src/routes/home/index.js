@@ -13,5 +13,6 @@ router.get("/register", controller.output.register);
 router.post("/login", controller.process.login);
 router.post("/register", controller.process.register);
 router.post("/getMenu", controller.process.getMenu);
+router.post("/category/:category/addMenu", controller.process.addMenu);
 
 module.exports = router;

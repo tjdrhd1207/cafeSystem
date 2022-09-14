@@ -28,13 +28,27 @@ TODO localStoarge Read & Write
 18. [o] 메뉴를 삭제할 때
 19. [] localStorage에 있는 데이터를 읽어온다.
 
+TODO 서버 요청 부분
+1. [o] 웹 서버를 띄운다.
+2. [] 서버에 새로운 메뉴가 추가될 수 있도록 요청한다.
+3. [] 서버에서 카테고리별 메뉴리스트를 받아온다.
+4. [] 서버에 메뉴가 수정될 수 있도록 요청한다.
+5. [] 서버에서 메뉴의 품절상태를 토글될 수 있도록 요청한다.
+6. [] 서버에 메뉴가 삭제될 수 있도록 요청한다.
+
+//회고
+// -'상태값'의 중요성
+// -상태값을 사용해서 사용자 관점에서 페이지 렌더링이 될 때 페이지 렌더링이 어떻게 되는지
+
+
 */
 import { $ } from './../utils/dom.js';
 import store from './../store/main.js';
 
+const BASE_URL = "http://localhost:3000/api";
+
+
 const allItem = [];
-
-
 
 function App(){
 
@@ -166,10 +180,23 @@ function App(){
             
             allItem.push(coffee);
             
-            this.menu[this.currentCategory].push(coffee);
+            //this.menu[this.currentCategory].push(coffee);
+            fetch(`/category/${this.currentCategory}/addMenu`, {
+                method : "POST",
+                headers : {
+                    "Content-Type" : "application/json",
+                },
+                body : JSON.stringify({ name : menu_input, price : menu_price, category : this.currentCategory }),
+
+            }).then((data)=>{
+                console.log(data);
+            }).then((res)=>{
+                return res.json();
+            });
+
             store.setLocalStorage(this.menu);
             e.preventDefault();
-            render();
+            //render();
 
             /* const menuTemplate = (e) => { return `
                                     <li data-menu-id="${index}" class="menu-list-name">
@@ -265,7 +292,6 @@ function App(){
             }
         });
     }
-
     
 
     $(".cafe-type-navbar").addEventListener("click", (e)=>{
