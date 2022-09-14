@@ -29,18 +29,12 @@ TODO localStoarge Read & Write
 19. [] localStorage에 있는 데이터를 읽어온다.
 
 */
-const $ = (selector) => document.querySelector(selector);
+import { $ } from './../utils/dom.js';
+import store from './../store/main.js';
 
 const allItem = [];
 
-const store = {
-    setLocalStorage(menu){
-        localStorage.setItem("menu", JSON.stringify(menu)); 
-    },
-    getLocalStorage(){
-        return JSON.parse(localStorage.getItem("menu"));
-    }
-}
+
 
 function App(){
 
@@ -51,6 +45,7 @@ function App(){
         tea : [],
         desert : []
     };
+
     this.currentCategory = 'espresso';
 
     this.init = () => {
@@ -60,6 +55,7 @@ function App(){
             
         }
         render();
+        initEventListener();
     }
 
     const displayItem = (data) =>{
@@ -201,11 +197,12 @@ function App(){
         console.log("menuId :"+menuId);
         
             if(confirm("메뉴를 삭제하시겠습니까?")){
-                $menu.remove();
+                /* $menu.remove(); */
                 this.menu[this.currentCategory].splice(menuId, 1);
                 store.setLocalStorage(this.menu);
-            }
-        render();   
+                render();
+            } 
+           
     }
 
     const updateMenuName = (e) => {
@@ -213,20 +210,20 @@ function App(){
         const menuId = e.target.closest("li").dataset.menuId
         const $menuName = e.target.closest("li").querySelector(".menu-name");
         const updatedMenuName = prompt("메뉴명을 수정하세요", $menuName.innerText);
-        console.log(menuId);
+        
         this.menu[this.currentCategory][menuId].name = updatedMenuName;
         store.setLocalStorage(this.menu);
     
         if(updatedMenuName != null){
-            $menuName.innerText = updatedMenuName;
+            render();
         }
     }
     
     const updateMenuCount = () => {
         //const 변수 = li 갯수를 카운팅
-        const menuCount = document.querySelectorAll("li").length;
+        //const menuCount = document.querySelectorAll("li").length;
     
-        $("#menu-count").innerHTML = `총 ${menuCount} 개`;
+        $("#menu-count").innerHTML = `총 ${this.menu[this.currentCategory].length} 개`;
     }
     
     const updateMenuPrice = (e) => {
@@ -234,35 +231,42 @@ function App(){
         const updateMenuPrice = prompt("가격을 수정하세요", $menuPrice.innerText);
         if(updateMenuPrice != null){
             $menuPrice.innerText = updateMenuPrice+"원";
-        }
-    }
-    
-    $("#menu-list").addEventListener("click", (e)=>{
-    
-        if(e.target.classList.contains("menu-edit-btn")){
-               updateMenuName(e);
-               return;
-        }
-    
-        if(e.target.classList.contains("price-edit-btn")){
-            updateMenuPrice(e);
-            return;
-        }
-    
-        if(e.target.classList.contains("menu-del-btn")){
-            
-            removeMenu(e);
-    
-            updateMenuCount();
-            return;
+            /*render(); */
         }
         
-        if(e.target.classList.contains("menu-sold-out-btn")){
-            soldOutMenu(e);
+    }
+    
+    const initEventListener = () =>{
+
+        $("#menu-list").addEventListener("click", (e)=>{
+    
+            if(e.target.classList.contains("menu-edit-btn")){
+                   updateMenuName(e);
+                   return;
+            }
+        
+            if(e.target.classList.contains("price-edit-btn")){
+                updateMenuPrice(e);
+                return;
+            }
+        
+            if(e.target.classList.contains("menu-del-btn")){
+                
+                removeMenu(e);
+        
+                /* updateMenuCount(); */
+                return;
+            }
             
-            return;
-        }
-    });
+            if(e.target.classList.contains("menu-sold-out-btn")){
+                soldOutMenu(e);
+                
+                return;
+            }
+        });
+    }
+
+    
 
     $(".cafe-type-navbar").addEventListener("click", (e)=>{
         const isCategoryButton = e.target.classList.contains("coffee-type");
