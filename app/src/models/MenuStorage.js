@@ -10,10 +10,15 @@ class MenuStorage{
 
         const menu = JSON.parse(data);
         
-        if(isAll) return menu;
-
-
-        return menu;
+        if(isAll === true) return menu;
+        
+        const menuByCategory = [];
+        
+        menu.filter((item)=>{
+            return item['category']===isAll ? menuByCategory.push(item) : null
+        })
+        
+        return menuByCategory;
     }
 
     static getMenu(isAll){
@@ -21,7 +26,7 @@ class MenuStorage{
         return fs
         .readFile("./src/databases/menu.json")
         .then((data)=>{
-            console.log("data : "+data);
+            
             return this.#getMenu(data, isAll);
         })
         .catch((err) => console.log(err));
@@ -31,29 +36,29 @@ class MenuStorage{
         
         const menus = await this.getMenu(true);      
         
+        menus.filter((item)=>{
+            item['name']=== menuInfo.name ? callErr : null
+        });
 
-        if(menus.name.includes(menuInfo.name)){
+        const callErr = () =>{
             throw "이미 존재하는 메뉴입니다.";
         }
-
-        //데이터 추가
-        menus.name.push(menuInfo.name);
-        menus.category.push(menuInfo.category);
-        menus.price.push(menuInfo.price);
-        menus.isSoldOut.push(menuInfo.isSoldOut);
-
-        console.log("메뉴 : "+JSON.stringify(menus));
-
+        menus.push(menuInfo);
         fs.writeFile("./src/databases/menu.json", JSON.stringify(menus));
 
         return { success : true };
     }
 
+    static async updateMenu(menuInfo){
 
+        const menus = await this.getMenu(menuInfo.category);
 
+        console.log("update-menus : "+JSON.stringify(menus));
 
-
-
+        /* menus.filter((item)=>{
+            return item['id'] === menuInfo.id ? 
+        }) */
+    }
 
 }
 

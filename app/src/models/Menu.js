@@ -2,37 +2,53 @@
 
 const e = require("express");
 const MenuStorage = require("./MenuStorage.js");
+const { v4: uuidv4 } = require("uuid");
+
+
 
 class Menu {
+
     constructor(body){
-        
+        this.id = uuidv4();
         this.name = body.name;
         this.category = body.category;
         this.price = body.price;
         this.isSoldOut = false;
     }
 
-    async getMenu(){
-        const menu = this.body;
-
-        const response = await MenuStorage.getMenu();
-        console.log("result : "+JSON.stringify(response));
+    async getMenu(category){
+        const menu = category;
+        const response = await MenuStorage.getMenu(menu);
         return response;
     }
 
     async addMenu(category){
-        const menu = {name : this.name, category: category, price : this.price, isSoldOut : this.isSoldOut};
+        const menu = {id: this.id, name : this.name, category: category, price : this.price, isSoldOut : this.isSoldOut};
         //console.log("menu body : "+JSON.stringify(menu));
 
         try{
-        const response = await MenuStorage.addMenu(menu);
-        console.log("response : "+response);
-        return response;
+            const response = await MenuStorage.addMenu(menu);
+            //console.log("response : "+JSON.stringify(response));
+            return response;
         }catch(err){
             const result = { success : false, msg : err};
-            console.log("에러");
+            console.error(new Error("메뉴 삽입 실패"));
 
             return result;
+        }
+    }
+
+    async updateMenu(category){
+
+        const menu = {id: this.id, name : this.name, category: category};
+
+        try{
+            console.log("upMenu : "+JSON.stringify(menu));
+            const response = await MenuStorage.updateMenu(menu);
+
+            return response;
+        }catch(err){
+
         }
     }
 

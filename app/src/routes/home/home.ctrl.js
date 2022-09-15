@@ -36,21 +36,28 @@ const process = {
     },
     
     getMenu : async(req, res) => {
+        const { category } = req.params;
         const menu = new Menu(req.body);
-        const response = await menu.getMenu();
+        const response = await menu.getMenu(category);
         
         return res.json(response);
     },
 
     addMenu : async(req, res) => {
         const { category } = req.params;
-        console.log("category : "+category);
         const menu = new Menu(req.body);
-        console.log("req.body : "+JSON.stringify(req.body));
         const response = await menu.addMenu(category);
+        
+        return res.json(response);
+    },
 
-        //return res.json(response);
+    updateMenu : async(req, res) =>{
+        const { category } = req.params;
+        const menu = new Menu(req.body);
+        const response = await menu.updateMenu(category);
+        return res.json(response);
     }
+
 
 }
 
