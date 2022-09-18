@@ -24,7 +24,6 @@ class Menu {
 
     async addMenu(category){
         const menu = {id: this.id, name : this.name, category: category, price : this.price, isSoldOut : this.isSoldOut};
-        //console.log("menu body : "+JSON.stringify(menu));
 
         try{
             const response = await MenuStorage.addMenu(menu);
@@ -38,9 +37,9 @@ class Menu {
         }
     }
 
-    async updateMenu(category){
-
-        const menu = {id: this.id, name : this.name, category: category};
+    async updateMenu(category, id){
+        console.log("cate : "+category+", id : "+id);
+        const menu = { id: id, name : this.name, category: category};
 
         try{
             console.log("upMenu : "+JSON.stringify(menu));

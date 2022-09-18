@@ -53,8 +53,9 @@ const process = {
 
     updateMenu : async(req, res) =>{
         const { category } = req.params;
+        const { id } = req.params;
         const menu = new Menu(req.body);
-        const response = await menu.updateMenu(category);
+        const response = await menu.updateMenu(category, id);
         return res.json(response);
     }
 

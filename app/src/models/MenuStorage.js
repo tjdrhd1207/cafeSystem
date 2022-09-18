@@ -36,13 +36,8 @@ class MenuStorage{
         
         const menus = await this.getMenu(true);      
         
-        menus.filter((item)=>{
-            item['name']=== menuInfo.name ? callErr : null
-        });
+        findOverlapName(menus, menuInfo);
 
-        const callErr = () =>{
-            throw "이미 존재하는 메뉴입니다.";
-        }
         menus.push(menuInfo);
         fs.writeFile("./src/databases/menu.json", JSON.stringify(menus));
 
@@ -51,15 +46,39 @@ class MenuStorage{
 
     static async updateMenu(menuInfo){
 
-        const menus = await this.getMenu(menuInfo.category);
+        const menus = await this.getMenu(true);
+        
+        console.log("menus 정보 : "+JSON.stringify(menus));
+        findOverlapName(menus, menuInfo);
 
-        console.log("update-menus : "+JSON.stringify(menus));
+        //console.log("menus : "+menus);
 
-        /* menus.filter((item)=>{
-            return item['id'] === menuInfo.id ? 
-        }) */
+        menus.filter((item)=>{
+            if(item['id'] === menuInfo.id){ 
+                
+                item['name'] = menuInfo.name;
+            } 
+        });
+        
+        fs.writeFile("./src/databases/menu.json", JSON.stringify(menus));
+
+        return { success : true };
+
     }
 
+}
+
+const findOverlapName = (menus, menuInfo) =>{
+    
+    menus.filter((item)=>{
+        item['name'] === menuInfo.name ? callErr : null
+    });
+
+    
+    const callErr = () =>{
+        console.error("에러");
+        //throw "이미 존재하는 메뉴입니다.";
+    }
 }
 
 module.exports = MenuStorage;

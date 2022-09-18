@@ -85,8 +85,8 @@ const MenuApi = {
     },
 
     async updateMenu(menu){
-        const response = fetch(`/category/${menu.category}/updateMenu`, {
-            method : "POST",
+        const response = fetch(`/category/${menu.category}/id/${menu.id}/updateMenu`, {
+            method : "PUT",
             headers : {
                 "Content-Type" : "application/json",
             },
@@ -96,6 +96,19 @@ const MenuApi = {
           .catch((err)=>{
             alert(new Error("메뉴 수정 실패"));
           });
+    },
+
+    async toggleSoldOutMenu(menu){
+        const response = fetch(`/category/${menu.category}/id${menu.id}/soldOut`,{
+            method : "PUT",
+            headers : {
+                "Content-Type" : "applcation/json",
+            },
+            body : JSON.stringify(menu),
+        }).then((res)=>res.json())
+        .catch((err)=>{
+            alert(new Error("메뉴 수정 실패"));
+        });   
     }
 }
 
@@ -178,11 +191,12 @@ function App(){
     
     const render = async() => {
 
+        console.log("curCategory : "+this.currentCategory);
         this.menu[this.currentCategory] = await MenuApi.getAllMenuByCategory(this.currentCategory);
 
         const template = this.menu[this.currentCategory].map((item,index) => {
             return `
-            <li data-menu-id="${index}" class="menu-list-name">
+            <li data-menu-id="${index}" data-uuid="${item.id}" class="menu-list-name">
             <span class="menu-name ${item.soldOut ? 'sold-out' : "" }">${item.name}</span>
             <span class="menu-price">${item.price}원</span>
             <button class="menu-sold-out-btn" type="button">품절</button> 
@@ -193,12 +207,12 @@ function App(){
         }).join("");
     
         $("#menu-list").innerHTML = template;
-    
+        
         updateMenuCount();
     }
 
     //메뉴 추가
-    const addMenu = async(e) =>{
+    const addMenu = async() =>{
        
             const menu_input = $('#menu-name-input').value;
             const menu_price = $('#menu-price-input').value;
@@ -212,13 +226,13 @@ function App(){
 
             const reqObject = { name : menu_input, price : menu_price, category : this.currentCategory };
             await MenuApi.createMenu(reqObject);
+            
             this.menu[this.currentCategory] = await MenuApi.getAllMenuByCategory(this.currentCategory);
+            
             render();
 
-            e.preventDefault();
             
             
-
             $('#menu-name-input').value = "";
             $('#menu-price-input').value = "";
             //$("#menu-list").insertAdjacentHTML('beforeend',template);
@@ -244,17 +258,16 @@ function App(){
     
         const menuId = e.target.closest("li").dataset.menuId
         const $menuName = e.target.closest("li").querySelector(".menu-name");
+        const menuUuid = e.target.closest("li").dataset.uuid;
         const updatedMenuName = prompt("메뉴명을 수정하세요", $menuName.innerText);
         
-        const reqObject = { name : updatedMenuName, category : this.currentCategory};     
+        const reqObject = { id: menuUuid, name : updatedMenuName, category : this.currentCategory};     
         await MenuApi.updateMenu(reqObject);
+        
+        this.menu[this.currentCategory] = await MenuApi.getAllMenuByCategory(this.currentCategory);
 
-        this.menu[this.currentCategory][menuId].name = updatedMenuName;
-        //store.setLocalStorage(this.menu);
-    
-        if(updatedMenuName != null){
-            render();
-        }
+        render();
+        
     }
     
     const updateMenuCount = () => {
@@ -276,10 +289,21 @@ function App(){
     
     const initEventListener = () =>{
         $(`#add_menu_btn`).addEventListener("click",(e)=>{
-            addMenu(e);
+            addMenu();
             return;
         });
  
+        $('#menu-name-input').addEventListener("keyup", (e)=>{
+            if(e.keyCode === 13){
+                addMenu();
+            }
+        });
+
+        $('#menu-price-input').addEventListener("keyup", (e)=>{
+            if(e.keyCode === 13){
+                addMenu();
+            }
+        });
 
         $("#menu-list").addEventListener("click", (e)=>{
     
@@ -322,11 +346,16 @@ function App(){
         });
     
 
-    const soldOutMenu = (e) => {
+    const soldOutMenu = async(e) => {
        
         const menuId = e.target.closest("li").dataset.menuId;
-        
-        this.menu[this.currentCategory][menuId].soldOut = !this.menu[this.currentCategory][menuId].soldOut ;
+        const uuid = e.target.closest("li").dataset.uuid;
+        const menu = {id : uuid , category : this.currentCategory };
+
+        await MenuApi.toggleSoldOutMenu(menu);
+
+        this.menu[this.currentCategory] = await MenuApi.getAllMenuByCategory(this.currentCategory);
+        //this.menu[this.currentCategory][menuId].soldOut = !this.menu[this.currentCategory][menuId].soldOut ;
         
         render();
     }
