@@ -15,6 +15,10 @@ const output = {
 
     register : (req, res)=>{
         res.render("home/register");
+    },
+
+    order : (req, res)=>{
+        res.render("home/order");
     }
 };
 
@@ -51,12 +55,29 @@ const process = {
         return res.json(response);
     },
 
-    updateMenu : async(req, res) =>{
+    updateMenu : async(req, res) => {
         const { category } = req.params;
         const { id } = req.params;
         const menu = new Menu(req.body);
         const response = await menu.updateMenu(category, id);
         return res.json(response);
+    },
+
+    soldOut : async(req, res) => {
+        const { category } = req.params;
+        const { id } = req.params;
+        const menu = new Menu(req.body);
+        const response = await menu.toggleSoldOut(category, id);
+        return res.json(response);
+    },
+
+    deleteMenu : async(req, res) => {
+        const { id } = req.params;
+        console.log("id : "+ id);
+        const menu = new Menu(req.body);
+        const response = await menu.deleteMenu(id);
+        return res.json(response);
+
     }
 
 

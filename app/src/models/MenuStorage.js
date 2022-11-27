@@ -9,8 +9,12 @@ class MenuStorage{
     static #getMenu(data, isAll){
 
         const menu = JSON.parse(data);
+        console.log("menu : "+JSON.stringify(menu)+", ??? isAll : "+isAll);
         
-        if(isAll === true) return menu;
+        if(isAll === 'all'){
+            console.log("종료 : ");
+            return menu;
+        }
         
         const menuByCategory = [];
         
@@ -66,6 +70,37 @@ class MenuStorage{
 
     }
 
+    static async toggleSoldOut(menuInfo){
+
+        const menus = await this.getMenu(true);
+
+        menus.filter((item)=>{
+            if(item['id'] === menuInfo.id){
+                item['isSoldOut'] = !item['isSoldOut'];
+            }
+        });
+
+        fs.writeFile("./src/databases/menu.json", JSON.stringify(menus));
+
+        return { success : true };
+    }
+
+    static async deleteMenu(menuId){
+        
+        const menus = await this.getMenu(true);
+
+        menus.filter((item, index)=>{
+            //console.log(menuId);
+            if(item['id']=== menuId){
+                console.log("몇번째 : "+index);
+                menus.splice(index, 1);
+            }
+        });
+
+        fs.writeFile("./src/databases/menu.json", JSON.stringify(menus));
+
+        return { success : true };
+    }
 }
 
 const findOverlapName = (menus, menuInfo) =>{

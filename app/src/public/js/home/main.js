@@ -45,72 +45,9 @@ fetch받아오는 부분 response 수정
 */
 import { $ } from './../utils/dom.js';
 import store from './../store/main.js';
-
-const BASE_URL = "http://localhost:3000/api";
-
+import MenuApi from './../api/index.js';
 
 const allItem = [];
-
-const MenuApi = {
-    async getAllMenuByCategory(category){
-        
-        const response = await fetch(`/category/${category}/getMenu`,{
-            method : "POST",
-            headers : {
-                "Content-Type" : "application/json",
-            },
-            body : JSON.stringify({category : this.currentCategory}),
-        }).then((res)=>res.json())
-        .catch((err)=>{
-            console.error(new Error("메뉴 불러오기 중 에러 발생"));
-          });
-        
-        return response;
-    },
-
-    async createMenu(menu){
-        const response = fetch(`/category/${menu.category}/addMenu`, {
-            method : "POST",
-            headers : {
-                "Content-Type" : "application/json",
-            },
-            body : JSON.stringify(menu),
-
-        }).then((res)=>
-            res.json())
-          .catch((err)=>{
-            console.log("err : "+err);
-            alert(new Error("메뉴 등록 실패"));
-          });
-    },
-
-    async updateMenu(menu){
-        const response = fetch(`/category/${menu.category}/id/${menu.id}/updateMenu`, {
-            method : "PUT",
-            headers : {
-                "Content-Type" : "application/json",
-            },
-            body : JSON.stringify(menu),
-        
-        }).then((res)=>res.json())
-          .catch((err)=>{
-            alert(new Error("메뉴 수정 실패"));
-          });
-    },
-
-    async toggleSoldOutMenu(menu){
-        const response = fetch(`/category/${menu.category}/id${menu.id}/soldOut`,{
-            method : "PUT",
-            headers : {
-                "Content-Type" : "applcation/json",
-            },
-            body : JSON.stringify(menu),
-        }).then((res)=>res.json())
-        .catch((err)=>{
-            alert(new Error("메뉴 수정 실패"));
-        });   
-    }
-}
 
 function App(){
 
@@ -191,13 +128,15 @@ function App(){
     
     const render = async() => {
 
-        console.log("curCategory : "+this.currentCategory);
+        console.log("curCategory 렌덜이됨: "+this.currentCategory);
         this.menu[this.currentCategory] = await MenuApi.getAllMenuByCategory(this.currentCategory);
+        
+        console.log("메뉴 조회 결과 : "+JSON.stringify(this.menu[this.currentCategory]));
 
         const template = this.menu[this.currentCategory].map((item,index) => {
             return `
             <li data-menu-id="${index}" data-uuid="${item.id}" class="menu-list-name">
-            <span class="menu-name ${item.soldOut ? 'sold-out' : "" }">${item.name}</span>
+            <span class="menu-name ${item.isSoldOut ? 'sold-out' : "" }">${item.name}</span>
             <span class="menu-price">${item.price}원</span>
             <button class="menu-sold-out-btn" type="button">품절</button> 
             <button class="menu-edit-btn" >수정</button>
@@ -228,9 +167,8 @@ function App(){
             await MenuApi.createMenu(reqObject);
             
             this.menu[this.currentCategory] = await MenuApi.getAllMenuByCategory(this.currentCategory);
-            
-            render();
 
+            render();
             
             
             $('#menu-name-input').value = "";
@@ -240,20 +178,25 @@ function App(){
         
     }
 
-    const removeMenu = (e) =>{
+    //메뉴 삭제
+    const removeMenu = async(e) =>{
         const menuId = e.target.closest("li").dataset.menuId;
         const $menu = e.target.closest("li");
-        console.log("menuId :"+menuId);
+        const menuUuid = e.target.closest("li").dataset.uuid;
+        console.log("menuId :"+menuUuid);
         
             if(confirm("메뉴를 삭제하시겠습니까?")){
                 /* $menu.remove(); */
-                this.menu[this.currentCategory].splice(menuId, 1);
-                store.setLocalStorage(this.menu);
+                //this.menu[this.currentCategory].splice(menuId, 1);
+                //store.setLocalStorage(this.menu);
+                await MenuApi.deleteMenu(menuUuid);
+                this.menu[this.currentCategory] = await MenuApi.getAllMenuByCategory(this.currentCategory);
                 render();
-            } 
+            }
            
     }
 
+    //메뉴 수정
     const updateMenuName = async(e) => {
     
         const menuId = e.target.closest("li").dataset.menuId
@@ -350,12 +293,12 @@ function App(){
        
         const menuId = e.target.closest("li").dataset.menuId;
         const uuid = e.target.closest("li").dataset.uuid;
-        const menu = {id : uuid , category : this.currentCategory };
+        const menu = {id : uuid , category : this.currentCategory};
 
         await MenuApi.toggleSoldOutMenu(menu);
 
         this.menu[this.currentCategory] = await MenuApi.getAllMenuByCategory(this.currentCategory);
-        //this.menu[this.currentCategory][menuId].soldOut = !this.menu[this.currentCategory][menuId].soldOut ;
+        this.menu[this.currentCategory][menuId].soldOut = !this.menu[this.currentCategory][menuId].soldOut ;
         
         render();
     }
@@ -373,17 +316,6 @@ const nullCheck = (name, price) => {
 }
 
 const app = new App();
-
-/* const loadedMenuData = () => {
-    addMenu();
-
-    //form 태그가 자동으로 전송되는걸 막아주도록 해야함.
-    $("#menu-form").addEventListener("submit", (e)=>{
-        e.preventDefault();
-    }); 
-}
- */
-//loadedMenuData();
 
 document.addEventListener("DOMContentLoaded", app.loadStorage);
 app.init();
